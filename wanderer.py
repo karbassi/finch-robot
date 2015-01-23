@@ -11,7 +11,7 @@ zAccel = tweety.acceleration()[2]
 
 # Do the following while the Finch is not upside down (z value in gees above -0.7)
 while zAccel > -0.7:
-    
+
     left_obstacle, right_obstacle = tweety.obstacle()
     # If there's an obstacle on the left, back up and arc
     if left_obstacle:
@@ -29,5 +29,5 @@ while zAccel > -0.7:
         tweety.led(0,255,0)
     # Keep reading in the Z acceleration
     zAccel = tweety.acceleration()[2]
-    
+
 tweety.close()

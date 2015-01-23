@@ -216,7 +216,7 @@ def parse(sheet, speed=0.25):
                 next.reset()
             #set the next note equal to the token
             next.note = token
-            
+
         #special case for the first note
         if (token in 'CDEFGAB-' and not next.note):
             next.note = token

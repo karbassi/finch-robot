@@ -26,10 +26,10 @@ for count in range(5):
     print()
     finch.buzzer(0.8, 100*count)
     sleep(1)
-    
+
 finch.led('#FF0000')
 finch.buzzer(5, 440)
-sleep(5)    
+sleep(5)
 
 finch.halt()
 finch.close()

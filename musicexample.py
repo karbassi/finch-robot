@@ -19,7 +19,7 @@ import notes
 
 #Main function for the music player example program"""
 
-#Initialize the finch    
+#Initialize the finch
 finch = Finch()
 
 songList = ['E5  C D E C D E F  D E F D E F G  A  GE F C D E G E D C ',

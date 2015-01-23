@@ -22,5 +22,5 @@ while not left and not right:
 
     # Get obstacles to use to exit loop
     left, right = tweety.obstacle()
-    
+
 tweety.close()

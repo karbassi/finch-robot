@@ -8,14 +8,14 @@ from finch import Finch
 from time import sleep, time
 
 # Main function for the lap swimmer example program
-    
+
 finch = Finch() # Initialize the finch
 
 finch.led(255, 255, 0)
 laps = 0
 
 # Get the number of laps Finch will swim:
-    
+
 while laps <= 0:
     laps = int(input('Enter number of laps: '))
 
@@ -54,5 +54,5 @@ while laps > 0:
     finch.wheels(-0.5, -0.5)
     sleep(half_lap_time)
     laps -= 1
-    
+
 finch.close()

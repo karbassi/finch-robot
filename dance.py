@@ -6,7 +6,7 @@ from time import sleep
 print("Finch's First Python program.")
 # Instantiate the Finch object
 snakyFinch = Finch()
-    
+
 
 # Do a six step dance
 snakyFinch.led(255,0,0)

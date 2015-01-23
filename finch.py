@@ -14,11 +14,11 @@ class Finch():
     def __init__(self):
         self.connection = finchconnection.ThreadedFinchConnection()
         self.connection.open()
-        
+
     def led(self, *args):
         """Control three LEDs (orbs).
-       
-          - hex triplet string: led('#00FF8B') or 
+
+          - hex triplet string: led('#00FF8B') or
             0-255 RGB values: led(0, 255, 139)
         """
         if len(args) == 3:
@@ -78,11 +78,11 @@ class Finch():
         if data is not None:
             left = data[0] != 0
             right = data[1] != 0
-            return left, right 
+            return left, right
 
     def temperature(self):
         """ Returns temperature in degrees Celcius. """
-        
+
         self.connection.send(b'T')
         data = self.connection.receive()
         if data is not None:
@@ -90,7 +90,7 @@ class Finch():
 
     def convert_raw_accel(self, a):
         """Converts the raw acceleration obtained from the hardware into G's"""
-        
+
         if a > 31:
             a -= 64
         return a * 1.6 / 32.0
@@ -107,7 +107,7 @@ class Finch():
             tap, shake are boolean values -- true if the correspondig event has
             happened.
         """
-        
+
         self.connection.send(b'A')
         data = self.connection.receive()
         if data is not None:
@@ -125,7 +125,7 @@ class Finch():
         1.0 (full throttle forward).
         use left = right = 0.0 to stop.
         """
-        
+
         dir_left = int(left < 0)
         dir_right = int(right < 0)
         left = min(abs(int(left * 255)), 255)

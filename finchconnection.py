@@ -4,7 +4,7 @@
 # of a four year study at Carnegie Mellon's CREATE lab.
 # http://www.finchrobot.com
 
-import atexit 
+import atexit
 import os
 import ctypes
 import threading
@@ -27,7 +27,7 @@ if system == 'Windows':
         hid_api = ctypes.CDLL(os.path.join(HIDAPI_LIBRARY_PATH, "hidapi64.dll"))
     else:
         hid_api = ctypes.CDLL(os.path.join(HIDAPI_LIBRARY_PATH, "hidapi32.dll"))
-        
+
 elif system == 'Linux':
     if sys.maxsize > 2**32:
         hid_api = ctypes.CDLL(os.path.join(HIDAPI_LIBRARY_PATH, "libhidapi64.so"))
@@ -38,7 +38,7 @@ elif system == 'Darwin':
     hid_api = ctypes.CDLL(os.path.join(HIDAPI_LIBRARY_PATH, "libhidapi.dylib"))
 else:
     hid_api = ctypes.CDLL(os.path.join(HIDAPI_LIBRARY_PATH, "libhidapipi.so"))
-    
+
 def _inherit_docstring(cls):
     def doc_setter(method):
         parent = getattr(cls, method.__name__)
@@ -62,7 +62,7 @@ class FinchConnection:
         """ Connect to the robot.
 
         This method looks for a USB port the Finch is connceted to. """
-        
+
         _before_new_finch_connection(self)
         if self.is_open():
             self.close()
@@ -80,21 +80,21 @@ class FinchConnection:
 
     def close(self):
         """ Disconnect the robot. """
-        
+
         if self.c_finch_handle:
             self.send(b'R', [0]) # exit to idle (rest) mode
             hid_api.hid_close.argtypes = [ctypes.c_void_p]
             hid_api.hid_close(self.c_finch_handle)
         self.c_finch_handle = ctypes.c_void_p(None)
         self.c_io_buffer = ctypes.c_char_p(None)
-        
+
         global _open_finches
         if self in _open_finches:
             _open_finches.remove(self)
 
     def read_cmd_id(self):
         """ Read the robot's internal command counter. """
-        
+
         #self.send('z', receive = True)
         self.send(b'z')
         data = self.receive()
@@ -106,10 +106,10 @@ class FinchConnection:
         command: The command ASCII character
         payload: a list of up to 6 bytes of additional command info
         """
-        
+
         if not self.is_open():
             raise Exception("Connection to Finch was closed.")
-        
+
         # Format the buffer to contain the contents of the payload.
         for i in range(7):
             self.c_io_buffer[i] = b'\x00'
@@ -131,12 +131,12 @@ class FinchConnection:
         #self.cmd_id = (self.cmd_id + 1) % 256
         #if self.cmd_id == 0:
         #    self.cmd_id = 1
-                
+
         if python_version >= 3:
             self.c_io_buffer[8] = self.cmd_id
         else:
             self.c_io_buffer[8] = bytes(chr(self.cmd_id))
-        
+
         # Write to the Finch bufffer
         res = 0
         while not res:
@@ -144,10 +144,10 @@ class FinchConnection:
             res = hid_api.hid_write(self.c_finch_handle,
                                     self.c_io_buffer,
                                     ctypes.c_size_t(9))
-       
+
     def receive(self):
         """ Read the data from the Finch buffer. """
-        
+
         res = 9
         while res > 0:
             hid_api.hid_read.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_size_t]
@@ -163,10 +163,10 @@ class FinchConnection:
             if self.cmd_id == ord(self.c_io_buffer[8]):
                 break
         return [ord(self.c_io_buffer[i]) for i in range(9)]
-    
+
 class ThreadedFinchConnection(FinchConnection):
     """Threaded implementation of Finch Connection"""
-    
+
     lock = None
     thread = None
     main_thread = None
@@ -204,7 +204,7 @@ class ThreadedFinchConnection(FinchConnection):
             if self.lock is not None:
                 self.lock.release()
         return data
-    
+
     def _pinger(self):
         """ Sends keep-alive commands every few secconds of inactivity. """
 
@@ -267,4 +267,4 @@ atexit.register(_close_all_finches)
 
 
 
-    
+
