@@ -15,7 +15,7 @@ import sys
 VENDOR_ID = 0x2354
 DEVICE_ID = 0x1111
 
-HIDAPI_LIBRARY_PATH = os.environ.get('HIDAPI_LIB_PATH', './')
+HIDAPI_LIBRARY_PATH = os.environ.get('HIDAPI_LIB_PATH', os.path.dirname(os.path.realpath(__file__)))
 PING_FREQUENCY_SECONDS = 2.0 # seconds
 
 # Detect which operating system is present and load corresponding library
